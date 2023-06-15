@@ -131,15 +131,18 @@ local slider = frame:addSlider()
 --
 liftLabel:onClick(
   function(self,event,button,x,y)
-    if hatch:getState() then
-      hatch:open()
-      pod:send(math.ceil(slider:getIndex()))
-      hatch:close()
-      local time = os.time()
-      local ftime = textutils.formatTime(time, false)  
-      local str = "["..ftime.." @ID:"..os.computerID().."]".."Manual Lift Custom Drop."
-      bas.log(str)
-    end
+    if pod:getPos() == slider:getIndex() then return end
+    hatch:open()
+    pod:send(math.ceil(slider:getIndex()))
+    hatch:close()
+
+
+    local time = os.time()
+    local ftime = textutils.formatTime(time, false)  
+    local str = "["..ftime.." @ID:"..os.computerID().."]".."Manual Lift Custom Drop."
+    bas.log(str)
+
+
   end
 )
 --
@@ -148,10 +151,15 @@ local liftButton1 = frame:addButton()
 :setSize(14)
 :setText("Drop Lift")
 :onClick(
-  function()
+  function(self)
+
+
+
     hatch:open()
     pod:send(surfaceOffset)
     hatch:close()
+    
+    
     local time = os.time()
     local ftime = textutils.formatTime(time, false)  
     local str = "["..ftime.." @ID:"..os.computerID().."]".."Manual Lift Drop."
@@ -165,7 +173,9 @@ local liftButton2 = frame:addButton()
 :setSize(14)
 :setText("Raise Lift")
 :onClick(
-  function()
+  function(self)
+
+
     hatch:open()
     pod:send(0)
     hatch:close()
